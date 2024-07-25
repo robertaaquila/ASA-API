@@ -31,3 +31,6 @@ jobs:
           context: .
           push: true
           tags: carmonoca/asa:prod
+          build-args: |
+            DB_CONN=${{ secrets.DB_CONN }}
+            JWT_SECRET=${{ secrets.JWT_SECRET }}
