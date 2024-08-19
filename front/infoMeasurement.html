@@ -1,0 +1,149 @@
+<style>
+    .temperature-measurement {
+      background-color: #fff;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      align-items: start;
+      padding: 168px 0 39px 40px;
+    }
+    
+    .content-wrapper {
+      margin-left: 17px;
+    }
+    
+    .two-column-layout {
+      display: flex;
+      gap: 20px;
+    }
+    
+    .instruction-column {
+      display: flex;
+      flex-direction: column;
+      width: 50%;
+    }
+    
+    .instruction-box {
+      border-radius: 10px;
+      background-color: #004aad;
+      display: flex;
+      margin-top: 90px;
+      flex-grow: 1;
+      flex-direction: column;
+      color: #fff;
+      width: 100%;
+      padding: 30px 78px 95px;
+      font: 700 36px Poppins, sans-serif;
+      border: 3px solid #054a92;
+    }
+    
+    .thermometer-icon {
+      aspect-ratio: 1;
+      object-fit: contain;
+      object-position: center;
+      width: 96px;
+      align-self: center;
+    }
+    
+    .instruction-text {
+      margin-top: 35px;
+    }
+    
+    .image-column {
+      display: flex;
+      flex-direction: column;
+      width: 50%;
+      margin-left: 20px;
+    }
+    
+    .temperature-image {
+      aspect-ratio: 0.97;
+      object-fit: contain;
+      object-position: center;
+      width: 100%;
+      flex-grow: 1;
+    }
+    
+    .exit-button {
+      border-radius: 40px;
+      background-color: #004aad;
+      box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+      margin-top: 139px;
+      width: 237px;
+      max-width: 100%;
+      color: #fff;
+      padding: 20px 70px 37px;
+      font: 600 28px Inter, sans-serif;
+    }
+    
+    @media (max-width: 991px) {
+      .temperature-measurement {
+        padding: 100px 0 0 20px;
+      }
+    
+      .content-wrapper {
+        max-width: 100%;
+      }
+    
+      .two-column-layout {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+      }
+    
+      .instruction-column,
+      .image-column {
+        width: 100%;
+      }
+    
+      .instruction-box {
+        max-width: 100%;
+        margin-top: 40px;
+        padding: 0 20px;
+      }
+    
+      .instruction-text {
+        max-width: 100%;
+      }
+    
+      .temperature-image {
+        max-width: 100%;
+        margin-top: 40px;
+      }
+    
+      .exit-button {
+        margin-top: 40px;
+        white-space: normal;
+        padding: 20px;
+      }
+    }
+    
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    </style>
+    
+    <section class="temperature-measurement">
+      <div class="content-wrapper">
+        <div class="two-column-layout">
+          <div class="instruction-column">
+            <div class="instruction-box">
+              <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/eb2a8c0c1123416a7f025b4aff34248ada61b2d23d4204b1e150488edc74b2b6?placeholderIfAbsent=true&apiKey=7b1c29c733ff4c39b0192a97a3a9abc5" alt="Thermometer icon" class="thermometer-icon" />
+              <p class="instruction-text">Por favor, aproxime o punho do termometro de temperatura para realizarmos a medição da sua temperatura.</p>
+            </div>
+          </div>
+          <div class="image-column">
+            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/bdc96bd96e00fb36e0e52405e46c7ad65aac1426092b13060b7c0b01223d5c1f?placeholderIfAbsent=true&apiKey=7b1c29c733ff4c39b0192a97a3a9abc5" alt="Temperature measurement illustration" class="temperature-image" />
+          </div>
+        </div>
+      </div>
+      <button class="exit-button">Sair</button>
+    </section>

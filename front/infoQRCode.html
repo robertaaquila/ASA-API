@@ -1,0 +1,115 @@
+<style>
+    .cpf-not-registered {
+      background-color: #fff;
+      overflow: hidden;
+      padding: 65px 0 114px 54px;
+    }
+    
+    .content-wrapper {
+      display: flex;
+      gap: 20px;
+    }
+    
+    .message-column {
+      display: flex;
+      flex-direction: column;
+      width: 50%;
+    }
+    
+    .message-box {
+      border-radius: 10px;
+      background-color: #004aad;
+      display: flex;
+      flex-direction: column;
+      padding: 3px 80px 73px;
+      border: 3px solid #054a92;
+    }
+    
+    .warning-icon {
+      aspect-ratio: 0.6;
+      object-fit: contain;
+      width: 79px;
+      align-self: center;
+    }
+    
+    .warning-text {
+      color: #fff;
+      font: 700 36px Poppins, sans-serif;
+    }
+    
+    .qr-code {
+      aspect-ratio: 1.04;
+      object-fit: contain;
+      width: 208px;
+      align-self: center;
+      margin-top: 135px;
+    }
+    
+    .image-column {
+      display: flex;
+      width: 50%;
+      margin-left: 20px;
+    }
+    
+    .illustration {
+      aspect-ratio: 1;
+      object-fit: contain;
+      width: 100%;
+      align-self: stretch;
+      margin: auto 0;
+    }
+    
+    @media (max-width: 991px) {
+      .cpf-not-registered {
+        padding: 0 0 100px 20px;
+      }
+    
+      .content-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+      }
+    
+      .message-column,
+      .image-column {
+        width: 100%;
+        margin-left: 0;
+      }
+    
+      .message-box {
+        max-width: 100%;
+        padding: 0 20px;
+        margin-top: 40px;
+      }
+    
+      .warning-text {
+        max-width: 100%;
+      }
+    
+      .qr-code {
+        margin-top: 40px;
+      }
+    
+      .illustration {
+        max-width: 100%;
+        margin-top: 40px;
+      }
+    }
+    </style>
+    
+    <section class="cpf-not-registered">
+      <div class="content-wrapper">
+        <div class="message-column">
+          <div class="message-box">
+            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/a2922484842473423bd6cf60911f1a794b127cf59e9c98aa84074854f8287afb?placeholderIfAbsent=true&apiKey=7b1c29c733ff4c39b0192a97a3a9abc5" alt="Warning icon" class="warning-icon" />
+            <p class="warning-text">
+              O CPF indicado não possui cadastro, por favor, tente outro CPF ou realize o cadastro apontando o celular para o QR Code abaixo.
+            </p>
+          </div>
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/d0ac24b26b47e0aab4570dc14ba444fc2b0209999b8136adcedac48f72951f13?placeholderIfAbsent=true&apiKey=7b1c29c733ff4c39b0192a97a3a9abc5" alt="QR Code for registration" class="qr-code" />
+        </div>
+        <div class="image-column">
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/f258180640c6cba23f0f70c8165545b1ad75fe54c08ab561dec45e05fd123c9b?placeholderIfAbsent=true&apiKey=7b1c29c733ff4c39b0192a97a3a9abc5" alt="Illustrative image" class="illustration" />
+        </div>
+      </div>
+    </section>

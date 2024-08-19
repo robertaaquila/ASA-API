@@ -1,0 +1,96 @@
+<style>
+    .totem-inicio {
+      background-color: #fff;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    
+    .image-container {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      width: 100%;
+    }
+    
+    @media (max-width: 991px) {
+      .image-container {
+        max-width: 100%;
+      }
+    }
+    
+    .background-image {
+      position: absolute;
+      inset: 0;
+      height: 100%;
+      width: 100%;
+      object-fit: contain;
+      object-position: center;
+    }
+    
+    .fullscreen-button {
+      position: relative;
+      all: unset;
+      display: flex;
+      flex-direction: column;
+      appearance: none;
+      color: white;
+      border-radius: 4px;
+      text-align: center;
+      cursor: pointer;
+      width: 100vw;
+      height: 100vh;
+      align-self: stretch;
+      margin: 0 0 auto calc(50% - 50vw);
+      padding: 15px 25px;
+    }
+    
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    </style>
+    
+    <section class="totem-inicio">
+      <div class="image-container">
+        <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/3ead206d429ae59c81758954dca89510b2e0ed8df46b35a570c0eca59cb39140?placeholderIfAbsent=true&apiKey=7b1c29c733ff4c39b0192a97a3a9abc5" class="background-image" alt="" />
+        <button class="fullscreen-button" data-el="button-1">
+          <span class="visually-hidden">Fullscreen action</span>
+        </button>
+      </div>
+    </section>
+    
+    <script>
+    (() => {
+      const state = {};
+      let context = null;
+      let nodesToDestroy = [];
+      let pendingUpdate = false;
+    
+      function destroyAnyNodes() {
+        nodesToDestroy.forEach((el) => el.remove());
+        nodesToDestroy = [];
+      }
+    
+      function update() {
+        if (pendingUpdate === true) {
+          return;
+        }
+        pendingUpdate = true;
+        document.querySelectorAll("[data-el='button-1']").forEach((el) => {
+          el.setAttribute("openLinkInNewTab", false);
+        });
+        destroyAnyNodes();
+        pendingUpdate = false;
+      }
+    
+      update();
+    })();
+    </script>
