@@ -4,8 +4,7 @@ const router = express.Router()
 const jwt_verificar = require("../middleware/jwt.js")
 
 // Model
-const consulta_model = require("../model/consulta.model.js")
-const consulta = require("../model/consulta.model.js")
+const db = require("../database/index.js");
 
 // Buscar consulta por ID
 router.get("/:id", jwt_verificar, async (req, res) => {
@@ -13,13 +12,15 @@ router.get("/:id", jwt_verificar, async (req, res) => {
 
 
     try {
-        const consulta = await consulta_model.findById({_id: id}).populate({
-            path: "paciente",
-            select: "nome cpf genero data_nascimento -_id"
-        }).populate({
-            path: "medico",
-            select: "nome email -_id"
-        })
+        const consulta = await db.consulta.findUnique({
+            where:{
+                id_consulta: parseInt(id)
+            },
+            include: {
+              id_paciente: true, // Inclui detalhes do paciente relacionado
+              id_medico: true,   // Inclui detalhes do médico relacionado
+            },
+          });
 
         res.status(200).send({consulta})
         
@@ -37,15 +38,15 @@ router.get("/paciente/:id",jwt_verificar, async (req, res) => {
     const id = req.params.id 
 
     try {
-        const consulta = await consulta_model.find({paciente:{
-            _id: id
-        }}).populate({
-            path: "paciente",
-            select: "nome cpf genero data_nascimento"
-        }).populate({
-            path: "medico",
-            select: "nome email -_id"
-        })
+        const consulta = await db.consulta.findMany({
+            where:{
+                paciente_id: parseInt(id)
+            },
+            include: {
+              id_paciente: true, // Inclui detalhes do paciente relacionado
+              id_medico: true,   // Inclui detalhes do médico relacionado
+            },
+          });
 
         res.status(200).send({consulta})
         
@@ -63,15 +64,15 @@ router.get("/medico/:id", jwt_verificar, async (req, res) => {
     const id = req.params.id 
 
     try {
-        const consulta = await consulta_model.find({medico:{
-            _id: id
-        }}).populate({
-            path: "paciente",
-            select: "nome cpf genero data_nascimento -_id"
-        }).populate({
-            path: "medico",
-            select: "nome email -_id"
-        })
+        const consulta = await db.consulta.findMany({
+            where:{
+                medico_id: parseInt(id)
+            },
+            include: {
+              id_paciente: true, // Inclui detalhes do paciente relacionado
+              id_medico: true,   // Inclui detalhes do médico relacionado
+            },
+          });
 
         res.status(200).send({consulta})
         
@@ -108,25 +109,38 @@ router.post("/",jwt_verificar, async (req, res) => {
         return res.status(422).send({message: "Status da consulta é obrigatório"})
     }
 
-    // Verificar se já existe uma consulta nessa data
-    const consulta_existe = await consulta_model.findOne({data_consulta: data_consulta})
-
-    if(consulta_existe){
-        return res.status(422).send({message: "Já possui horário marcado, agende outro horário"})
-    }
-
-    // Criar consulta
-    const consulta = new consulta_model({
-        data_consulta,
-        tipo_consulta,
-        checkin,
-        paciente: paciente_id,
-        medico: medico_id,
-        status
-    })
 
     try {
-        await consulta.save()
+        // Verificar se já existe uma consulta nessa data
+    const consulta_existe = await db.consulta.findMany({
+        where:{
+            data_consulta: data_consulta
+        }
+    })
+
+    if(consulta_existe.length > 0){
+        return res.status(422).send({message: "Já possui horário marcado, agende outro horário"})
+    }
+    } catch (error) {
+        console.log(error)
+        return
+    }
+    
+
+    
+
+    
+    try {
+        // Criar consulta
+        const consulta = await db.consulta.create({data:{
+            data_consulta,
+            tipo_consulta,
+            checkin,
+            paciente_id: parseInt(paciente_id) ,
+            medico_id: parseInt(medico_id),
+            status
+        }
+        })
 
         res.status(201).send({message: "Consulta criada com sucesso"})
         
@@ -154,7 +168,11 @@ router.put("/:id", jwt_verificar, async (req, res) => {
     
 
     // Verificar se existe consulta
-    const consulta_existe = await consulta_model.findById({_id: id})
+    const consulta_existe = await db.consulta.findUnique({
+        where:{
+            id_consulta: parseInt(id)
+        }
+    })
 
     if(!consulta_existe){
         return res.status(422).send({message: "Não possui consulta com esse ID"})
@@ -162,9 +180,58 @@ router.put("/:id", jwt_verificar, async (req, res) => {
 
     // Atualizar o status
     try {
-        const consulta = await consulta_model.findByIdAndUpdate(id, {status: status})
-        await consulta.save()
+        const consulta_existe = await db.consulta.update({
+            where:{
+                id_consulta: parseInt(id)
+            },
+            data:{
+                status:status
+            }
+        })
         res.status(201).send({message: "Status da consulta atualizado com sucesso"})
+
+    } catch (error) {
+        res.status(500).send({
+            message: "Erro ao criar a consulta, tente novamente mais tarde"
+        })
+
+        console.log(error)
+    }
+    
+})
+
+// Fazer checkin
+router.put("/checkin/:id", jwt_verificar, async (req, res) => {
+    const id = req.params.id
+
+    // Validação
+    if(!id){
+        return res.status(422).send({message: "ID da consulta é obrigatório"})
+    }
+    
+
+    // Verificar se existe consulta
+    const consulta_existe = await db.consulta.findUnique({
+        where:{
+            id_consulta: parseInt(id)
+        }
+    })
+
+    if(!consulta_existe){
+        return res.status(422).send({message: "Não possui consulta com esse ID"})
+    }
+
+    // Atualizar o status
+    try {
+        const consulta_existe = await db.consulta.update({
+            where:{
+                id_consulta: parseInt(id)
+            },
+            data:{
+                checkin: "Realizado"
+            }
+        })
+        res.status(201).send({message: "Checkin realizado com sucesso"})
 
     } catch (error) {
         res.status(500).send({
